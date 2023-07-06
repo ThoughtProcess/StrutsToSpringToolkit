@@ -11,4 +11,4 @@ plugins {
 }
 
 rootProject.name = 'StrutsToSpringToolkit'
-include('app', 'list', 'utilities')
+include('jspConverter', 'strutsJspLibrary')
