@@ -5,3 +5,20 @@
 plugins {
     id 'com.rombalabs.strutstospringtoolkit.java-library-conventions'
 }
+
+tasks.named('jar') {
+    manifest {
+        attributes(
+//            'Automatic-Module-Name': 'jspConverterModule',
+                'Class-Path': configurations.runtimeClasspath.collect { it.getName() }.join(' '))
+    }
+}
+
+dependencies {
+    implementation 'org.apache.logging.log4j:log4j-core'
+    implementation 'org.apache.logging.log4j:log4j-api'
+    implementation 'commons-io:commons-io'
+    implementation 'org.apache.commons:commons-lang3'
+
+    api group: 'org.jsoup', name: 'jsoup', version: '1.16.1'
+}
