@@ -2,6 +2,7 @@ package com.rombalabs.strutstospringtoolkit.jspservices.transformers.struts.html
 
 import com.rombalabs.strutstospringtoolkit.jspservices.transformers.struts.BaseTagTransformer;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.internal.StringUtil;
 import org.jsoup.nodes.Element;
 
 public class OptionsTagTransformer extends BaseTagTransformer {
@@ -19,12 +20,30 @@ public class OptionsTagTransformer extends BaseTagTransformer {
         var name = element.attr("name");
         var property = element.attr("property");
 
-        // Special case:
-        // If the "labelName" attribute is specified, we need to iterate on two lists,
-        // one for the values, and another for the labels.
-        if (StringUtils.isEmpty(collection) &&
-                !StringUtils.isEmpty(name) &&
-                !StringUtils.isEmpty(labelName)) {
+        if (!StringUtils.isEmpty(collection)) {
+            element.tagName(newTagName);
+            element.attr("items", "${" + collection + "}");
+            if(!StringUtils.isEmpty(property))
+                element.attr("itemValue", property);
+
+            if(!StringUtils.isEmpty(labelProperty))
+                element.attr("itemLabel", labelProperty);
+        }
+        else if (StringUtils.isEmpty(name) != StringUtils.isEmpty(property)) {
+            // One of either name or property are defined.
+            element.tagName(newTagName);
+            element.attr("items", "${" + name + property + "}");
+        }
+        else if (!StringUtils.isEmpty(name) && !StringUtils.isEmpty(property)) {
+            // Both name and property are defined.
+            element.tagName(newTagName);
+            element.attr("items", "${" + name + "." + property + "}");
+        }
+        else {
+            // Special case:
+            // If the "labelName" attribute is specified, we need to iterate on two lists,
+            // one for the values, and another for the labels.
+
             element.tagName("c:forEach");
             element.attr("var", "idx");
             element.attr("begin", "0");
@@ -35,16 +54,6 @@ public class OptionsTagTransformer extends BaseTagTransformer {
             optionElement.attr("value", "${" + name + "[idx]}");
             optionElement.attr("label", "${" + labelName + "[idx]}");
             element.appendChild(optionElement);
-        }
-        else {
-            element.tagName(newTagName);
-            element.attr("items", "${" +
-                    (!StringUtils.isEmpty(collection) ? collection : name) + "}");
-            if(!StringUtils.isEmpty(property))
-                element.attr("itemValue", property);
-
-            if(!StringUtils.isEmpty(labelProperty))
-                element.attr("itemLabel", labelProperty);
         }
 
         if (!StringUtils.isEmpty(cssClass)) {
