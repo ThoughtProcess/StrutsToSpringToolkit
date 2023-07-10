@@ -20,8 +20,10 @@ A command-line tool which converts a variety of Struts 1.x tags to their JSTL or
 * html:text
 * html:textarea
 * logic:empty
+* logic:equal
 * logic:iterate
 * logic:notEmpty
+* logic:notEqual
 * logic:present
 
 ...and plenty more to come.
