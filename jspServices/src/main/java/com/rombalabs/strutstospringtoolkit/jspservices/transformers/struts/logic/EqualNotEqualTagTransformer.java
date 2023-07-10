@@ -78,7 +78,7 @@ public class EqualNotEqualTagTransformer extends BaseTagTransformer implements T
 
         return "${" + name +
                 (!property.isEmpty() ? "." + property : "") +
-                (equal ? " eq " : " neq ") +
+                (equal ? " eq " : " ne ") +
                 value + "}";
     }
 
