@@ -2,6 +2,7 @@ package com.rombalabs.strutstospringtoolkit.jspservices;
 
 import com.rombalabs.strutstospringtoolkit.jspservices.transformers.PreprocessTransformer;
 import com.rombalabs.strutstospringtoolkit.jspservices.transformers.preprocessing.AttributeInlineLogicTagTransformer;
+import com.rombalabs.strutstospringtoolkit.jspservices.transformers.preprocessing.HtmlTagTransformer;
 import com.rombalabs.strutstospringtoolkit.jspservices.transformers.preprocessing.InlineBeanWriteTagTransformer;
 import com.rombalabs.strutstospringtoolkit.jspservices.transformers.preprocessing.InlineScriptletTransformer;
 import org.apache.commons.io.FileUtils;
@@ -24,6 +25,7 @@ public class PreProcessor implements FileProcessor {
         transformers = new ArrayList<>();
 
         // struts:bean transformers
+        transformers.add(new HtmlTagTransformer());
         transformers.add(new InlineScriptletTransformer());
         transformers.add(new AttributeInlineLogicTagTransformer());
         transformers.add(new InlineBeanWriteTagTransformer());
