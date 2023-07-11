@@ -1,5 +1,6 @@
 package com.rombalabs.strutstospringtoolkit.jspconverter;
 
+import com.rombalabs.strutstospringtoolkit.jspservices.PreProcessor;
 import com.rombalabs.strutstospringtoolkit.jspservices.StrutsProcessor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,7 +32,10 @@ public class App {
             }
         }
 
+        var preProcessor = new PreProcessor();
         var strutsProcessor = new StrutsProcessor();
-        strutsProcessor.processFile(args[0], rewriteInPlace);
+
+        var outputFile = preProcessor.processFile(args[0], rewriteInPlace);
+        strutsProcessor.processFile(outputFile, true);
     }
 }

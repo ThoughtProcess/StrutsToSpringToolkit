@@ -26,9 +26,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StrutsProcessor {
+public class StrutsProcessor implements FileProcessor {
 
-    public static final Logger logger = LogManager.getLogger();
+    protected static final Logger logger = LogManager.getLogger();
 
     private final List<TagTransformer> transformers;
 
@@ -51,7 +51,8 @@ public class StrutsProcessor {
         transformers.add(new IterateTagTransformer());
     }
 
-    public Document processFile(String filename, boolean rewrite) {
+    @Override
+    public String processFile(String filename, boolean rewrite) {
         String content;
         try {
             logger.info("Loading file " + filename);
@@ -63,9 +64,7 @@ public class StrutsProcessor {
 
         var result = processContent(content);
 
-        save(result, filename, rewrite);
-
-        return result;
+        return save(result, filename, rewrite);
     }
 
     public Document processContent(String content) {
@@ -103,7 +102,7 @@ public class StrutsProcessor {
         return targetElement;
     }
 
-    private void save(Document doc, String originalFileName, boolean rewrite)
+    private String save(Document doc, String originalFileName, boolean rewrite)
     {
         try {
             if (!rewrite)
@@ -116,5 +115,7 @@ public class StrutsProcessor {
         } catch (IOException e) {
             logger.fatal("Failed to save converted file...", e);
         }
+
+        return originalFileName;
     }
 }

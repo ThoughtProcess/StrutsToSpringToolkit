@@ -2,6 +2,7 @@ package com.rombalabs.strutstospringtoolkit.jspservices.transformers.struts.logi
 
 import com.rombalabs.strutstospringtoolkit.jspservices.transformers.TagTransformer;
 import com.rombalabs.strutstospringtoolkit.jspservices.transformers.struts.BaseTagTransformer;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
@@ -70,20 +71,21 @@ public class EqualNotEqualTagTransformer extends BaseTagTransformer implements T
     private String createEqualityTestString(boolean equal, String name, String property, String value) {
         value = value.replaceAll("<%=(.*)%>", "$1").trim();
 
-        if(value.contains("<%"))
-            value = value.replace("<","")
-                    .replace("%","")
-                    .replace("=","")
-                    .replace(">","");
+        // Special case -- sometimes <logic:notEqual/> can be abused to behave like <logic:notEmpty/> with
+        // <logic:notEqual name="foo" property="bar" value=""/> ... </logic:notEqual>
+        if (StringUtils.isEmpty(value) && !equal) {
+            return "${!empty " + name +
+                    (!property.isEmpty() ? "." + property : "") +
+                    "}";
+        }
 
         return "${" + name +
                 (!property.isEmpty() ? "." + property : "") +
-                (equal ? " eq " : " neq ") +
+                (equal ? " eq " : " ne ") +
                 value + "}";
     }
 
     public boolean siblingBelongsInsideChoose(Element sibling, String referenceName, String referenceProperty) {
-
         var nextName = sibling.attr("name");
         var nextProperty = sibling.attr("property");
 
