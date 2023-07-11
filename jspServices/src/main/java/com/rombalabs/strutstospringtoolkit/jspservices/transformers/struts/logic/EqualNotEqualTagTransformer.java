@@ -69,6 +69,8 @@ public class EqualNotEqualTagTransformer extends BaseTagTransformer implements T
     }
 
     private String createEqualityTestString(boolean equal, String name, String property, String value) {
+        name = name.replaceAll("<%=(.*)%>", "$1").trim();
+        property = property.replaceAll("<%=(.*)%>", "$1").trim();
         value = value.replaceAll("<%=(.*)%>", "$1").trim();
 
         // Special case -- sometimes <logic:notEqual/> can be abused to behave like <logic:notEmpty/> with

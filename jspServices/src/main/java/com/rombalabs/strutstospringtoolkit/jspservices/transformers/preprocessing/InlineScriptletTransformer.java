@@ -21,15 +21,15 @@ public class InlineScriptletTransformer implements PreprocessTransformer {
     Pattern sessionAttributePattern;
 
     public InlineScriptletTransformer() {
-        initialRequestPattern = Pattern.compile("<%=(\\s+)?request\\.get\\S+\\((\\S+)?\\)(\\s+)?%>");
-        requestAttributePattern = Pattern.compile("<%=(\\s+)?request\\.getAttribute\\(\"(\\S+)\"\\)(\\s+)?%>");
-        requestParameterPattern = Pattern.compile("<%=(\\s+)?request\\.getParameter\\(\"(\\S+)\"\\)(\\s+)?%>");
-        requestParameterValuesPattern = Pattern.compile("<%=(\\s+)?request\\.getParameterValues\\(\"(\\S+)\"\\)(\\s+)?%>");
-        requestHeaderPattern = Pattern.compile("<%=(\\s+)?request\\.getHeader\\(\"(\\S+)\"\\)(\\s+)?%>");
-        requestHeaderValuesPattern = Pattern.compile("<%=(\\s+)?request\\.getHeaderValues\\(\"(\\S+)\"\\)(\\s+)?%>");
-        requestContextPathPattern = Pattern.compile("<%=(\\s+)?request\\.getContextPath\\(\\)(\\s+)?%>");
+        initialRequestPattern = Pattern.compile("<%=[\\s+]?request\\.get\\S+\\((\\S+)?\\)[\\s+]?%>");
+        requestAttributePattern = Pattern.compile("<%=[\\s+]?request\\.getAttribute\\(\"(\\S+)\"\\)[\\s+]?%>");
+        requestParameterPattern = Pattern.compile("<%=[\\s+]?request\\.getParameter\\(\"(\\S+)\"\\)[\\s+]?%>");
+        requestParameterValuesPattern = Pattern.compile("<%=[\\s+]?request\\.getParameterValues\\(\"(\\S+)\"\\)[\\s+]?%>");
+        requestHeaderPattern = Pattern.compile("<%=[\\s+]?request\\.getHeader\\(\"(\\S+)\"\\)[\\s+]?%>");
+        requestHeaderValuesPattern = Pattern.compile("<%=[\\s+]?request\\.getHeaderValues\\(\"(\\S+)\"\\)[\\s+]?%>");
+        requestContextPathPattern = Pattern.compile("<%=[\\s+]?request\\.getContextPath\\(\\)[\\s+]?%>");
 
-        sessionAttributePattern = Pattern.compile("<%=(\\s+)?request\\.getSession\\(\\)\\.getAttribute\\(\"(\\S+)\"\\)(\\s+)?%>");
+        sessionAttributePattern = Pattern.compile("<%=[\\s+]?request\\.getSession\\(\\)\\.getAttribute\\(\"(\\S+)\"\\)[\\s+]?%>");
     }
     @Override
     public String processText(String inputText) {
@@ -67,7 +67,7 @@ public class InlineScriptletTransformer implements PreprocessTransformer {
             result = m.replaceAll("\\${pageContext.request.contextPath}");
 
             m = sessionAttributePattern.matcher(result);
-            result = m.replaceAll("\\${sessionScope[\1]}");
+            result = m.replaceAll("\\${sessionScope[$1]}");
         }
 
         return result;
