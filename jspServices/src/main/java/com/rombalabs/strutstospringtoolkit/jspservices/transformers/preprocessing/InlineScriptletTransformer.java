@@ -1,15 +1,9 @@
 package com.rombalabs.strutstospringtoolkit.jspservices.transformers.preprocessing;
 
-import com.rombalabs.strutstospringtoolkit.jspservices.transformers.PreprocessTransformer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InlineScriptletTransformer implements PreprocessTransformer {
-
-    protected static final Logger logger = LogManager.getLogger();
+public class InlineScriptletTransformer extends BasePreprocessTransformer {
 
     Pattern initialRequestPattern;
     Pattern requestAttributePattern;
@@ -36,6 +30,7 @@ public class InlineScriptletTransformer implements PreprocessTransformer {
         String result = inputText;
         Matcher m = initialRequestPattern.matcher(inputText);
         if (m.find()) {
+            logger.info("Preprocessing line that contains a scriptlet: " + inputText);
             /*
             https://balusc.omnifaces.org/2011/09/communication-in-jsf-20.html#ImplicitELObjects
             #{requestScope}: the current request attribute map
@@ -68,6 +63,8 @@ public class InlineScriptletTransformer implements PreprocessTransformer {
 
             m = sessionAttributePattern.matcher(result);
             result = m.replaceAll("\\${sessionScope[$1]}");
+
+            logger.info("Converted scriptlet to: " + result);
         }
 
         return result;

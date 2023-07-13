@@ -1,6 +1,5 @@
 package com.rombalabs.strutstospringtoolkit.jspservices.transformers.preprocessing;
 
-import com.rombalabs.strutstospringtoolkit.jspservices.transformers.PreprocessTransformer;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -10,7 +9,7 @@ import org.jsoup.parser.Parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InlineBeanWriteTagTransformer implements PreprocessTransformer {
+public class InlineBeanWriteTagTransformer extends BasePreprocessTransformer {
 
     Pattern beanWritePattern;
 
@@ -23,6 +22,8 @@ public class InlineBeanWriteTagTransformer implements PreprocessTransformer {
         String result = inputText;
         Matcher m = beanWritePattern.matcher(inputText);
         if (m.matches()) {
+            logger.info("Preprocessing a one-line <bean:write> element: " + inputText);
+
             Parser parser = Parser.xmlParser();
             parser.settings(new ParseSettings(true, true)); // tag, attribute preserve case
             Document doc = Jsoup.parse(m.toMatchResult().group(),"", parser);

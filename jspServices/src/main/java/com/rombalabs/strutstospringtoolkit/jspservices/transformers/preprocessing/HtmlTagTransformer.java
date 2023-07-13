@@ -1,15 +1,9 @@
 package com.rombalabs.strutstospringtoolkit.jspservices.transformers.preprocessing;
 
-import com.rombalabs.strutstospringtoolkit.jspservices.transformers.PreprocessTransformer;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.parser.ParseSettings;
-import org.jsoup.parser.Parser;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class HtmlTagTransformer implements PreprocessTransformer {
+public class HtmlTagTransformer extends BasePreprocessTransformer {
 
     final Pattern htmlTagPattern;
 

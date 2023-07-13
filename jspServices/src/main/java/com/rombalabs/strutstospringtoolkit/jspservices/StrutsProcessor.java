@@ -86,7 +86,7 @@ public class StrutsProcessor implements FileProcessor {
 
     private Element processElement(Element targetElement) {
         if (targetElement != null) {
-            logger.info("Now on a " + targetElement.tagName() + " element");
+            logger.debug("Now on a " + targetElement.tagName() + " element");
             // Process the current element
             for (TagTransformer transformer : transformers) {
                 if (transformer.processElement(targetElement)) break;

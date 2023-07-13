@@ -16,6 +16,8 @@ public class EqualNotEqualTagTransformer extends BaseTagTransformer implements T
             !element.tagName().equals("logic:notEqual"))
             return false;
 
+        logger.info("Now transforming: " + element.tagName());
+
         var name = element.attr("name");
         var property = element.attr("property");
 
