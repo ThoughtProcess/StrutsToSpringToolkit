@@ -7,7 +7,7 @@ plugins {
     id 'java'
 }
 
-version = '0.5.0-alpha.2'
+version = '0.5.0-alpha.3'
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -30,12 +30,16 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-tasks.withType(JavaCompile).configureEach {
-    options.compilerArgs += ["-Xlint:all"]
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
 }
 
-tasks.named('compileJava', JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += ["-Xlint:all"]
     options.javaModuleVersion = provider { version }
+    options.release = 11
 }
 
 tasks.named('test', Test) {

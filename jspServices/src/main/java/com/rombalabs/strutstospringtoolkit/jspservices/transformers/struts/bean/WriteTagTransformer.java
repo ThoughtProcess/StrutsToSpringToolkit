@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
 
-public class WriteTagTransformer extends BaseTagTransformer implements TagTransformer {
+public class WriteTagTransformer extends BaseTagTransformer {
 
     public WriteTagTransformer() {
         replacementMap.put("bean:write", "");

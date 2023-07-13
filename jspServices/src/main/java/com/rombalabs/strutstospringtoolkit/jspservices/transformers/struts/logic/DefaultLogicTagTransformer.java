@@ -7,7 +7,7 @@ import org.jsoup.nodes.Element;
 /**
  * A catch-all class to handle several kinds of Struts logic TLD primitives.
  */
-public class DefaultLogicTagTransformer extends BaseTagTransformer implements TagTransformer {
+public class DefaultLogicTagTransformer extends BaseTagTransformer {
 
     public DefaultLogicTagTransformer() {
         replacementMap.put("logic:present", "c:if");

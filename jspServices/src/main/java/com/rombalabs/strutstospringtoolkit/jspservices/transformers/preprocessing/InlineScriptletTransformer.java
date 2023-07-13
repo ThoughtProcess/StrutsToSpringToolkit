@@ -1,15 +1,9 @@
 package com.rombalabs.strutstospringtoolkit.jspservices.transformers.preprocessing;
 
-import com.rombalabs.strutstospringtoolkit.jspservices.transformers.PreprocessTransformer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InlineScriptletTransformer implements PreprocessTransformer {
-
-    protected static final Logger logger = LogManager.getLogger();
+public class InlineScriptletTransformer extends BasePreprocessTransformer {
 
     Pattern initialRequestPattern;
     Pattern requestAttributePattern;
@@ -21,21 +15,22 @@ public class InlineScriptletTransformer implements PreprocessTransformer {
     Pattern sessionAttributePattern;
 
     public InlineScriptletTransformer() {
-        initialRequestPattern = Pattern.compile("<%=(\\s+)?request\\.get\\S+\\((\\S+)?\\)(\\s+)?%>");
-        requestAttributePattern = Pattern.compile("<%=(\\s+)?request\\.getAttribute\\(\"(\\S+)\"\\)(\\s+)?%>");
-        requestParameterPattern = Pattern.compile("<%=(\\s+)?request\\.getParameter\\(\"(\\S+)\"\\)(\\s+)?%>");
-        requestParameterValuesPattern = Pattern.compile("<%=(\\s+)?request\\.getParameterValues\\(\"(\\S+)\"\\)(\\s+)?%>");
-        requestHeaderPattern = Pattern.compile("<%=(\\s+)?request\\.getHeader\\(\"(\\S+)\"\\)(\\s+)?%>");
-        requestHeaderValuesPattern = Pattern.compile("<%=(\\s+)?request\\.getHeaderValues\\(\"(\\S+)\"\\)(\\s+)?%>");
-        requestContextPathPattern = Pattern.compile("<%=(\\s+)?request\\.getContextPath\\(\\)(\\s+)?%>");
+        initialRequestPattern = Pattern.compile("<%=[\\s+]?request\\.get\\S+\\((\\S+)?\\)[\\s+]?%>");
+        requestAttributePattern = Pattern.compile("<%=[\\s+]?request\\.getAttribute\\(\"(\\S+)\"\\)[\\s+]?%>");
+        requestParameterPattern = Pattern.compile("<%=[\\s+]?request\\.getParameter\\(\"(\\S+)\"\\)[\\s+]?%>");
+        requestParameterValuesPattern = Pattern.compile("<%=[\\s+]?request\\.getParameterValues\\(\"(\\S+)\"\\)[\\s+]?%>");
+        requestHeaderPattern = Pattern.compile("<%=[\\s+]?request\\.getHeader\\(\"(\\S+)\"\\)[\\s+]?%>");
+        requestHeaderValuesPattern = Pattern.compile("<%=[\\s+]?request\\.getHeaderValues\\(\"(\\S+)\"\\)[\\s+]?%>");
+        requestContextPathPattern = Pattern.compile("<%=[\\s+]?request\\.getContextPath\\(\\)[\\s+]?%>");
 
-        sessionAttributePattern = Pattern.compile("<%=(\\s+)?request\\.getSession\\(\\)\\.getAttribute\\(\"(\\S+)\"\\)(\\s+)?%>");
+        sessionAttributePattern = Pattern.compile("<%=[\\s+]?request\\.getSession\\(\\)\\.getAttribute\\(\"(\\S+)\"\\)[\\s+]?%>");
     }
     @Override
     public String processText(String inputText) {
         String result = inputText;
         Matcher m = initialRequestPattern.matcher(inputText);
         if (m.find()) {
+            logger.info("Preprocessing line that contains a scriptlet: " + inputText);
             /*
             https://balusc.omnifaces.org/2011/09/communication-in-jsf-20.html#ImplicitELObjects
             #{requestScope}: the current request attribute map
@@ -67,7 +62,9 @@ public class InlineScriptletTransformer implements PreprocessTransformer {
             result = m.replaceAll("\\${pageContext.request.contextPath}");
 
             m = sessionAttributePattern.matcher(result);
-            result = m.replaceAll("\\${sessionScope[\1]}");
+            result = m.replaceAll("\\${sessionScope[$1]}");
+
+            logger.info("Converted scriptlet to: " + result);
         }
 
         return result;

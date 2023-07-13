@@ -1,6 +1,5 @@
 package com.rombalabs.strutstospringtoolkit.jspservices.transformers.preprocessing;
 
-import com.rombalabs.strutstospringtoolkit.jspservices.transformers.PreprocessTransformer;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -10,7 +9,7 @@ import org.jsoup.parser.Parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AttributeInlineLogicTagTransformer implements PreprocessTransformer {
+public class AttributeInlineLogicTagTransformer extends BasePreprocessTransformer {
 
     Pattern attributeLogicTagPattern;
 
@@ -24,6 +23,8 @@ public class AttributeInlineLogicTagTransformer implements PreprocessTransformer
         String result = inputText;
         Matcher m = attributeLogicTagPattern.matcher(inputText);
         if (m.find()) {
+            logger.info("Preprocessing a line that contains a <logic:[not]equal> element: " + inputText);
+
             Parser parser = Parser.xmlParser();
             parser.settings(new ParseSettings(true, true)); // tag, attribute preserve case
             Document doc = Jsoup.parse(m.toMatchResult().group(),"", parser);
@@ -31,6 +32,8 @@ public class AttributeInlineLogicTagTransformer implements PreprocessTransformer
             var elString = convertElement(doc.root().child(0), "");
 
             result = m.replaceAll(elString);
+
+            logger.info("Converted to: " + result);
         }
 
         return result;
