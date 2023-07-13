@@ -7,7 +7,7 @@ import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
 
-public class EqualNotEqualTagTransformer extends BaseTagTransformer implements TagTransformer {
+public class EqualNotEqualTagTransformer extends BaseTagTransformer {
 
     @Override
     public boolean processElement(Element element) {

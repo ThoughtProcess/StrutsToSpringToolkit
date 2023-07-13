@@ -8,7 +8,7 @@ import org.jsoup.nodes.Element;
 /**
  A catch-all class to handle several kinds of Struts html TLD primitives.
  */
-public class DefaultHtmlTagTransformer extends BaseTagTransformer implements TagTransformer {
+public class DefaultHtmlTagTransformer extends BaseTagTransformer {
 
     public DefaultHtmlTagTransformer() {
         replacementMap.put("html:checkbox", "form:checkbox");
