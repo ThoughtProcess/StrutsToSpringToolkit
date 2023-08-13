@@ -52,7 +52,7 @@ public class StrutsProcessor implements FileProcessor {
     }
 
     @Override
-    public String processFile(String filename, boolean rewrite) {
+    public String processFile(String filename, String outputFilePath) {
         String content;
         try {
             logger.info("Loading file " + filename);
@@ -64,7 +64,7 @@ public class StrutsProcessor implements FileProcessor {
 
         var result = processContent(content);
 
-        return save(result, filename, rewrite);
+        return save(result, outputFilePath);
     }
 
     public Document processContent(String content) {
@@ -102,20 +102,16 @@ public class StrutsProcessor implements FileProcessor {
         return targetElement;
     }
 
-    private String save(Document doc, String originalFileName, boolean rewrite)
+    private String save(Document doc, String outputFileName)
     {
         try {
-            if (!rewrite)
-                originalFileName = originalFileName.replace(".jsp", "_converted.jsp");
-
-            logger.info("Saving output file to: " + originalFileName);
-            File convertedFile = new File(originalFileName);
+            logger.info("Saving output file to: " + outputFileName);
+            File convertedFile = new File(outputFileName);
             FileUtils.writeStringToFile(convertedFile, Parser.unescapeEntities(doc.html(), false), "UTF-8");
-            //FileUtils.writeStringToFile(convertedFile, doc.html(), "UTF-8");
         } catch (IOException e) {
             logger.fatal("Failed to save converted file...", e);
         }
 
-        return originalFileName;
+        return outputFileName;
     }
 }

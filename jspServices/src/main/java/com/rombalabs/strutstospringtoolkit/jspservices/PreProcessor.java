@@ -5,7 +5,6 @@ import com.rombalabs.strutstospringtoolkit.jspservices.transformers.preprocessin
 import com.rombalabs.strutstospringtoolkit.jspservices.transformers.preprocessing.HtmlTagTransformer;
 import com.rombalabs.strutstospringtoolkit.jspservices.transformers.preprocessing.InlineBeanWriteTagTransformer;
 import com.rombalabs.strutstospringtoolkit.jspservices.transformers.preprocessing.InlineScriptletTransformer;
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,13 +29,11 @@ public class PreProcessor implements FileProcessor {
     }
 
     @Override
-    public String processFile(String filename, boolean rewrite) {
-        var outputPath = filename.replace(".jsp", "_converted.jsp");
+    public String processFile(String filename, String outputFilePath) {
         logger.info("Loading file " + filename);
-        logger.info("Storing output in " + (rewrite ? "temporary " : "") + "location: " + outputPath);
 
         try (var reader = new BufferedReader(new FileReader(filename))) {
-            try (var writer = new BufferedWriter(new FileWriter(outputPath))) {
+            try (var writer = new BufferedWriter(new FileWriter(outputFilePath))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     var processedLine = processContent(line);
@@ -45,19 +42,13 @@ public class PreProcessor implements FileProcessor {
                 }
             }
 
-            if (rewrite) {
-                File outputFile = new File(outputPath);
-                FileUtils.copyFile(outputFile, new File(filename));
-                FileUtils.delete(outputFile);
-                outputPath = filename;
-            }
 
         } catch (IOException e) {
             logger.error("Failed to load file.", e);
             throw new RuntimeException(e);
         }
 
-        return outputPath;
+        return outputFilePath;
     }
 
     public String processContent(String content) {
