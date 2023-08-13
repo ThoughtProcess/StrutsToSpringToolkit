@@ -18,7 +18,7 @@ public class OptionsCollectionTagTransformer extends BaseTagTransformer {
         var property = element.attr("property");
         var value = element.attr("value");
 
-        element.tagName(newTagName);
+        element.renameTagPreserveProperties(newTagName);
         element.attr("items", createExpressionLanguageString(name, property));
 
         if(!StringUtils.isEmpty(value))

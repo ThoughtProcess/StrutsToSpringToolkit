@@ -16,7 +16,7 @@ public class SelectTagTransformer extends BaseTagTransformer {
         var name = element.attr("name");
         var property = element.attr("property");
 
-        element.tagName(newTagName);
+        element.renameTagPreserveProperties(newTagName);
         element.attr("path", createExpressionLanguageString(name, property));
 
         if (!StringUtils.isEmpty(styleClass)) {

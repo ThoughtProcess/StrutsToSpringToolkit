@@ -21,7 +21,7 @@ public class OptionsTagTransformer extends BaseTagTransformer {
         var property = element.attr("property");
 
         if (!StringUtils.isEmpty(collection)) {
-            element.tagName(newTagName);
+            element.renameTagPreserveProperties(newTagName);
             element.attr("items", "${" + collection + "}");
             if(!StringUtils.isEmpty(property))
                 element.attr("itemValue", property);
@@ -31,12 +31,12 @@ public class OptionsTagTransformer extends BaseTagTransformer {
         }
         else if (StringUtils.isEmpty(name) != StringUtils.isEmpty(property)) {
             // One of either name or property are defined.
-            element.tagName(newTagName);
+            element.renameTagPreserveProperties(newTagName);
             element.attr("items", "${" + name + property + "}");
         }
         else if (!StringUtils.isEmpty(name) && !StringUtils.isEmpty(property)) {
             // Both name and property are defined.
-            element.tagName(newTagName);
+            element.renameTagPreserveProperties(newTagName);
             element.attr("items", "${" + name + "." + property + "}");
         }
         else {

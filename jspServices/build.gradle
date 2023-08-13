@@ -18,7 +18,8 @@ dependencies {
     implementation 'org.apache.logging.log4j:log4j-api'
     implementation 'commons-io:commons-io'
     implementation 'org.apache.commons:commons-lang3'
+    implementation group: 'jakarta.annotation', name: 'jakarta.annotation-api', version: '2.1.1'
 
-    api group: 'org.jsoup', name: 'jsoup', version: '1.16.1'
+    api group: 'org.jsoup', name: 'jsoup', version: '1.16.2-SNAPSHOT'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
 }

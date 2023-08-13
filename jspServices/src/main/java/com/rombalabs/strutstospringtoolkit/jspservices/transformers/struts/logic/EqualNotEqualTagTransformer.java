@@ -63,7 +63,7 @@ public class EqualNotEqualTagTransformer extends BaseTagTransformer {
         var property = element.attr("property");
         var value = element.attr("value");
 
-        element.tagName(newTagName);
+        element.renameTagPreserveProperties(newTagName);
         element.attr("test", createEqualityTestString(equal, name, property, value));
         element.removeAttr("name");
         element.removeAttr("property");

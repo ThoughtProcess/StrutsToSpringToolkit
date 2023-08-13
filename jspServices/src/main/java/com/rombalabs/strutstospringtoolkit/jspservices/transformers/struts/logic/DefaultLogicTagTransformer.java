@@ -22,7 +22,7 @@ public class DefaultLogicTagTransformer extends BaseTagTransformer {
         var name = element.attr("name");
         var property = element.attr("property");
 
-        element.tagName(newTagName);
+        element.renameTagPreserveProperties(newTagName);
         element.attr("test", createEqualityTestString(emptyTag, name, property));
         element.removeAttr("name");
         element.removeAttr("property");
