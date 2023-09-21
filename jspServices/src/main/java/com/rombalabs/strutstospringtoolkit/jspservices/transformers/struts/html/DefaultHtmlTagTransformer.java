@@ -27,7 +27,7 @@ public class DefaultHtmlTagTransformer extends BaseTagTransformer {
         var property = element.attr("property");
         var cssClass = element.attr("styleClass");
 
-        element.tagName(newTagName);
+        element.renameTagPreserveProperties(newTagName);
 
         if (!StringUtils.isEmpty(cssClass)) {
             element.attr("cssClass", cssClass);

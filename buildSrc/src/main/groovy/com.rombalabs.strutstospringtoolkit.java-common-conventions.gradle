@@ -7,13 +7,15 @@ plugins {
     id 'java'
 }
 
-version = '0.5.0-alpha.3'
+version = '0.6.1'
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+    flatDir {
+        dirs("../../jsoup/target")
+    }
 }
-
 dependencies {
     constraints {
         // Define dependency versions as constraints

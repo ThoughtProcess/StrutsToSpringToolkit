@@ -11,7 +11,7 @@ public class MessageTagTransformer extends BaseTagTransformer {
     @Override
     protected void convertElement(Element element, String newTagName) {
         var key = element.attr("key");
-        element.tagName(newTagName);
+        element.renameTagPreserveProperties(newTagName);
 
         element.attr("code", key);
         element.removeAttr("key");

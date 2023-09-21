@@ -15,7 +15,7 @@ public class IterateTagTransformer extends BaseTagTransformer {
         var name = element.attr("name");
         var property = element.attr("property");
 
-        element.tagName(newTagName);
+        element.renameTagPreserveProperties(newTagName);
         element.attr("items", createExpressionLanguageString(name, property));
         element.attr("var", id);
 

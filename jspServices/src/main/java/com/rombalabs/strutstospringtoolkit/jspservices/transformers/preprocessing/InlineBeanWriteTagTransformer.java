@@ -14,21 +14,22 @@ public class InlineBeanWriteTagTransformer extends BasePreprocessTransformer {
     Pattern beanWritePattern;
 
     public InlineBeanWriteTagTransformer() {
-        beanWritePattern = Pattern.compile("<bean:write\\s+(\\S+=['|\"]\\S+['|\"]' ?)+\\s+/>");
+        beanWritePattern = Pattern.compile("<bean:write\\s+(\\S+=['|\"]\\S+['|\"] ?)+/>");
     }
 
     @Override
     public String processText(String inputText) {
         String result = inputText;
         Matcher m = beanWritePattern.matcher(inputText);
-        if (m.matches()) {
+        if (m.find()) {
             logger.info("Preprocessing a one-line <bean:write> element: " + inputText);
 
             Parser parser = Parser.xmlParser();
             parser.settings(new ParseSettings(true, true)); // tag, attribute preserve case
             Document doc = Jsoup.parse(m.toMatchResult().group(),"", parser);
 
-            result = convertElement(doc.root().child(0));
+            String jspExpression = convertElement(doc.root().child(0));
+            result = m.replaceAll(jspExpression);
         }
 
         return result;
@@ -51,6 +52,6 @@ public class InlineBeanWriteTagTransformer extends BasePreprocessTransformer {
             elString = "fn:escapeXml(" + elString + ")";
         }
 
-        return "${" + elString + "}";
+        return "\\${" + elString + "}";
     }
 }
