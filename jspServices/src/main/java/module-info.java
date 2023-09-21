@@ -1,3 +1,4 @@
+@SuppressWarnings({ "requires-automatic", "requires-transitive-automatic" })
 module StrutsToSpringToolkit.jspServices.main {
     requires transitive org.jsoup;
     requires transitive org.apache.logging.log4j;
