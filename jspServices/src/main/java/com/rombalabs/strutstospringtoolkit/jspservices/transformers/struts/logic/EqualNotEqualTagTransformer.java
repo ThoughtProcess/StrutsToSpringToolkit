@@ -68,6 +68,7 @@ public class EqualNotEqualTagTransformer extends BaseTagTransformer {
         element.removeAttr("name");
         element.removeAttr("property");
         element.removeAttr("value");
+        element.removeAttr("scope");
     }
 
     private String createEqualityTestString(boolean equal, String name, String property, String value) {
